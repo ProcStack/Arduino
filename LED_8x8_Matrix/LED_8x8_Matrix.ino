@@ -147,7 +147,7 @@ void loop(){
 
 }
  void test(){ 
-  // This function generates two swirling lines to thicken the single LED visibility
+  // This function runs 3 different test displays, good for checking orientation of your module
   byte curBin;
   int i;
   runner++;
