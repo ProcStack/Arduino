@@ -87,8 +87,7 @@ char arrayToByte(const char inputArray[8]){
 }
  
  
-void Write_Max7219_byte(unsigned char DATA) 
-{   
+void Write_Max7219_byte(unsigned char DATA) {   
   unsigned char i;
   digitalWrite(Max7219_pinCS,LOW);		
   for(i=8;i>=1;i--){
@@ -100,16 +99,14 @@ void Write_Max7219_byte(unsigned char DATA)
 }
  
  
-void Write_Max7219(unsigned char address,unsigned char dat)
-{
+void Write_Max7219(unsigned char address,unsigned char dat){
         digitalWrite(Max7219_pinCS,LOW);
         Write_Max7219_byte(address);           //address，code of LED
         Write_Max7219_byte(dat);               //data，figure on LED 
         digitalWrite(Max7219_pinCS,HIGH);
 }
  
-void Init_MAX7219(void)
-{
+void Init_MAX7219(void){
  Write_Max7219(0x09, 0x00);       //decoding ：BCD
  Write_Max7219(0x0a, 0x03);       //brightness 
  Write_Max7219(0x0b, 0x07);       //scanlimit；8 LEDs
@@ -119,8 +116,7 @@ void Init_MAX7219(void)
  
  
  
-void setup()
-{
+void setup(){
   pinMode(Max7219_pinCLK,OUTPUT);
   pinMode(Max7219_pinCS,OUTPUT);
   pinMode(Max7219_pinDIN,OUTPUT);
@@ -277,9 +273,7 @@ void othello(){
   int gen=-1;
   int localRun=0;
   int maxRun=3;
-  runner++;
-  runner++;
-  runner++;
+  runner+=3; // Making the steps larger makes the animation run faster
   if(int(runner)%20==0){
     prep=1;
     maxRun=int(random(runner+value)*4);
