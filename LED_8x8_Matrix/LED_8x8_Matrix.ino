@@ -31,6 +31,7 @@ int Max7219_pinCS = 9;
 int Max7219_pinDIN = 8;
 double runner=-1;
 int prevCount=5;
+// Store trailing values on the swirl function, so its a line, rather than a single lit LED
 double xPrev[5]={-1,-1,-1,-1,-1};  // Previous swirl x
 double yPrev[5]={-1,-1,-1,-1,-1};  // Previous swirl y
 double xBPrev[5]={-1,-1,-1,-1,-1}; // Previous secondary swirl x
