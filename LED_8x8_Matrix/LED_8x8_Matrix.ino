@@ -78,6 +78,7 @@ char rowValUpdated[8][8]={  // For the on/off neighbor animation
 {0,0,0,0,0,0,0,0}  //7 Bottom row
 };
  
+// Convert the array to a format the MAX Matrix array can understand
 char arrayToByte(const char inputArray[8]){
   char result = 0;
   int idx;
@@ -87,26 +88,27 @@ char arrayToByte(const char inputArray[8]){
   return result;
 }
  
- 
+// Write to the MAX7219
 void Write_Max7219_byte(unsigned char DATA) {   
   unsigned char i;
   digitalWrite(Max7219_pinCS,LOW);		
   for(i=8;i>=1;i--){
     digitalWrite(Max7219_pinCLK,LOW);
-    digitalWrite(Max7219_pinDIN,DATA&0x80);// Extracting a bit data
+    digitalWrite(Max7219_pinDIN,DATA&0x80); // Extracting bit data
     DATA = DATA<<1;
     digitalWrite(Max7219_pinCLK,HIGH);
   }                                 
 }
  
- 
+// Main function to use unsigned char data to write to the MAX7219
 void Write_Max7219(unsigned char address,unsigned char dat){
-        digitalWrite(Max7219_pinCS,LOW);
-        Write_Max7219_byte(address);           //address，code of LED
-        Write_Max7219_byte(dat);               //data，figure on LED 
-        digitalWrite(Max7219_pinCS,HIGH);
+  digitalWrite(Max7219_pinCS,LOW);
+  Write_Max7219_byte(address);           //address，code of LED
+  Write_Max7219_byte(dat);               //data，figure on LED 
+  digitalWrite(Max7219_pinCS,HIGH);
 }
- 
+
+// Init the MAX7219
 void Init_MAX7219(void){
  Write_Max7219(0x09, 0x00);       //decoding ：BCD
  Write_Max7219(0x0a, 0x03);       //brightness 
@@ -115,8 +117,7 @@ void Init_MAX7219(void){
  Write_Max7219(0x0f, 0x00);       //test display：1；EOT，display：0
 }
  
- 
- 
+// Prep the arduino
 void setup(){
   pinMode(Max7219_pinCLK,OUTPUT);
   pinMode(Max7219_pinCS,OUTPUT);
@@ -129,7 +130,7 @@ void setup(){
   Init_MAX7219();
 }
  
- 
+// Loop the set functions for the Arduino to address the MAX7219 LED Matrix
 void loop(){
   // Use this function to test some set displays using hex or the 8x8 variable array
   // Good to check orientation of your LED array
@@ -143,8 +144,9 @@ void loop(){
   }
 
 }
- void test(){ 
-  // This function runs 3 different test displays, good for checking orientation of your module
+
+// This function runs 3 different test displays, good for checking orientation of your module
+void test(){ 
   byte curBin;
   int i;
   runner++;
@@ -181,13 +183,13 @@ void loop(){
   delay(1500);
 }
 
+// This function generates two swirling lines to thicken the single LED visibility
 void swirl(){ 
-  // This function generates two swirling lines to thicken the single LED visibility
   byte curBin;
-  char i,c,v;
+  char i,c,v;  // These should probably be ints
   double x,y,flipper;
   int exit=0;
-  while(exit == 0){
+  while(exit == 0){ // Get the front of the line to move
     runner++;
     flipper=sin(runner/13)*.5+.5;
     for(i=0;i<8;i++){ // Row
@@ -207,6 +209,8 @@ void swirl(){
       }
     }
   }
+  // Set visibility of the previously lit LEDs
+  // These previous LED values are stored in xPrev, yPrev
   for(v=prevCount-1; v>=0; v--){
     for(i=0;i<8;i++){ // Row
       for(c=0;c<8;c++){ // Column
@@ -223,6 +227,7 @@ void swirl(){
   xPrev[0]=x;
   yPrev[0]=y;
   
+  // I'm doing the above functions again, but slightly offset to make the line appear thicker
   exit=0;
   while(exit == 0){
     runner++;
@@ -257,7 +262,7 @@ void swirl(){
   }
   xBPrev[0]=x;
   yBPrev[0]=y;
-
+  // Write to the Max7219
   for(i=0;i<8;i++){
     curBin=arrayToByte(rowVals[i]);
     Write_Max7219((i+1),curBin);
@@ -266,11 +271,11 @@ void swirl(){
 }
 
 
+// This function will randomly start with one on light and turn on and off
+//   neighboring lights until all have been flipped.
 void othello(){ 
-  // This function will randomly start with one on light and turn on and off
-  //   neighboring lights until all have been flipped.
   byte curBin;
-  char i,c,v;
+  char i,c,v;  // These should probably be ints
   int gen=-1;
   int localRun=0;
   int maxRun=3;
@@ -302,6 +307,7 @@ void othello(){
       }
     }
   }
+  // Lets toggle neighbouring LEDs while limiting any toggling to the 0-7 height and width of the matrix array itself. 
   localRun=0;
   for(i=0;i<8;i++){ // Row
     for(c=0;c<8;c++){ // Column
