@@ -228,6 +228,7 @@ void swirl(){
   yPrev[0]=y;
   
   // I'm doing the above functions again, but slightly offset to make the line appear thicker
+  // There are better methods of doing this, but this is the brute force approach
   exit=0;
   while(exit == 0){
     runner++;
