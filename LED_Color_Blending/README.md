@@ -21,11 +21,6 @@ The line -   strip.show();
 Is where the NeoPixels values are set, you can use ' byte fadeR, fadeG, fadeB; ' variables how ever you'd like once blended.
 
 
-I've since changed my method behind blending.
-
-This still uses a more brute force approach.
-
-Updates will come as I advance this code base.
 
 
 For ease of use, NeoPixels are amazing-
