@@ -31,7 +31,7 @@
 
 // LED Strip
 #define PIN 6 // This is your SPI out to your NeoPixel strip
-const int maxled=9; // How many LEDs are on the NeoPixel string, or RGB leds you are working with
+const int maxled=15; // How many LEDs are on the NeoPixel string, or RGB leds you are working with
 const int blendCount=10;
 
 // For prepping maximum blended values; I'm using a 3 dimensional array (Below)
@@ -58,13 +58,46 @@ void setup() {
     }
   }
 
+  //Serial.begin(9600);
 }
 
 void loop() {
-  ledRun(10); // # is delay between cycles, 10 is pretty low
+  if(int(runner)%200<100){
+    ledFader(10); // Fade 'random' colors through your string
+  }else{
+    ledRun(10); // Run white leds down your string, showing the fade off rates
+  }
 }
 
 void ledRun(uint8_t wait) {
+  float i, j, colorMode, div;
+  byte fadeR, fadeG, fadeB;
+  runner+=1; // Add an arbitrary ammount per cycle, this is how fast it will run through the noise pattern in the for loop below
+  int mmRGB=255; // 255 is the max brightness an LED can be, but you can set it anywhere between 0-255
+  
+  // To use the test fade mode, leave alwaysOn=0
+  int alwaysOn=0;
+  int colorFor=50; // How long it will be adding colors into the blend
+  int fadeOutFor=150; // How long it will be adding 0's into the colors; to show the color fade out
+  
+  for(i=0;i< strip.numPixels(); i++) {
+    if(i == int(runner)%maxled){
+      fadeR=255;
+      fadeG=255;
+      fadeB=255;
+    }else{
+      fadeR=0;
+      fadeG=0;
+      fadeB=0;
+    }
+    smoothRGB(i,blendCount, &fadeR,&fadeG,&fadeB);
+    strip.setPixelColor(i, strip.Color(  int(fadeR),   int(fadeG), int(fadeB)));
+  }
+  strip.show();
+  delay(wait);
+}
+
+void ledFader(uint8_t wait) {
   float i, j, colorMode, div;
   byte fadeR, fadeG, fadeB;
   runner+=3.5; // Add an arbitrary ammount per cycle, this is how fast it will run through the noise pattern in the for loop below
@@ -91,6 +124,7 @@ void ledRun(uint8_t wait) {
   strip.show();
   delay(wait);
 }
+
 
 ////////////////////////////////////////////////////////////////////////////
 // Blending Function                                                      //
