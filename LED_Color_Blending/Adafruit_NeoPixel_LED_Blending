@@ -40,9 +40,8 @@ const int blendCount=10;
 // The third array is R, G, B respectively
 int lightVals[maxled][blendCount][3];
 
-// I'm using double's to save on ram
-double runner=0;
-double mmRGB=200;
+float runner=0;
+float mmRGB=200;
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(maxled, PIN, NEO_GRB + NEO_KHZ800);  //NeoPixel prep
 
@@ -66,7 +65,7 @@ void loop() {
 }
 
 void ledRun(uint8_t wait) {
-  double i, j, colorMode, div;
+  float i, j, colorMode, div;
   byte fadeR, fadeG, fadeB;
   runner+=3.5; // Add an arbitrary ammount per cycle, this is how fast it will run through the noise pattern in the for loop below
   int mmRGB=255; // 255 is the max brightness an LED can be, but you can set it anywhere between 0-255
@@ -97,8 +96,8 @@ void ledRun(uint8_t wait) {
 // Blending Function                                                      //
 ////////////////////////////////////////////////////////////////////////////
 // smoothRGB( # LED to blend in lightVals array, Smooth ammount, Red val, Green val, Blue val)
-void smoothRGB(int i, double smoothDist, byte *fadeR, byte *fadeG, byte *fadeB){
-  double dispVal, curvVal;
+void smoothRGB(int i, float smoothDist, byte *fadeR, byte *fadeG, byte *fadeB){
+  float dispVal, curvVal;
   int x,c,divCount;
   int runAdd=1;
   int blender=smoothDist-1;
@@ -128,11 +127,11 @@ void smoothRGB(int i, double smoothDist, byte *fadeR, byte *fadeG, byte *fadeB){
     }
     dispVal/=divCount;
     if(c==0){
-      *fadeR=max(0,min(mmRGB, double(dispVal)));
+      *fadeR=max(0,min(mmRGB, float(dispVal)));
     }else if(c==1){
-      *fadeG=max(0,min(mmRGB, double(dispVal)));
+      *fadeG=max(0,min(mmRGB, float(dispVal)));
     }else{
-      *fadeB=max(0,min(mmRGB, double(dispVal)));
+      *fadeB=max(0,min(mmRGB, float(dispVal)));
     }
   }
 }
