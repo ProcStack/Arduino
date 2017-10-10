@@ -13,6 +13,9 @@
 // Also, there is a non 'keyes' labeled remote I have as well, I'll expand the checks with those values.  //
 // For now, this is more of a cheat sheet to get started.                                                 //
 //                                                                                                        //
+// I've left the global variable optionPrev to store previous signals,                                    //
+//  this way you can find held down buttons.                                                              //
+//                                                                                                        //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <IRremote.h>
@@ -23,7 +26,7 @@ decode_results results;
 String optionPrev; // This is set when a held down button is registered
 
 void setup() {
-  Serial.begin(9600);
+  //Serial.begin(9600);
   irrecv.enableIRIn(); // Start the receiver  
 }
 
@@ -42,8 +45,8 @@ void IRFeedback(uint8_t wait) {
     }else{
       optionPrev=hex;
     }
-    Serial.print(hex+"\n");
-    Serial.print("\n\n");
+    //Serial.print(hex+"\n");
+    //Serial.print("\n\n");
     if(hex=="16736925"){ //Up
     }
     if(hex=="16720605"){ //Left
