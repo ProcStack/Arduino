@@ -5,9 +5,6 @@
 // These are the codes I've personally found for remotes listed when searching ebay for-                  //
 // "IR Receiver Module"                                                                                   //
 //                                                                                                        //
-// Needed headers---                                                                                      //
-// https://github.com/adafruit/Adafruit_NeoPixel                                                          //
-//                                                                                                        //
 // You'll need the IRremote header which can be found here -                                              //
 // http://www.righto.com/2009/08/multi-protocol-infrared-remote-library.html                              //
 //                                                                                                        //
